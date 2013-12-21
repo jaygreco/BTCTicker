@@ -7,7 +7,7 @@ The main purpose of BTCTicker is to allow you to view the exchange rate right on
 
 BTCTicker uses background fetch, favoring power efficiency over continous updating. Because of the way background fetch is implemented by Apple, it's tough to know exactly how often the price will update. I've been seeing updates every 3-5 minutes, although it greatly depends on your usages patterns for your device.
 
-Currently, BTCTicker is using the CoinBase API to pull exchange data and displays it in USD. However, it is easily changed to display a different currency, by changing the JSON tag <btc_to_xxx>, where xxx is the three digit currency code. In the future, addition of different exchanges is also planned.
+Currently, BTCTicker is using the CoinBase API to pull exchange data and displays it in USD. However, it is easily changed to display a different currency, by changing the JSON tag btc_to_xxx, where xxx is the three digit currency code. In the future, addition of different exchanges is also planned.
 
 Push notifications for price alerts are also planned, as is a settings bundle to change the display currency, exchange, and mBTC or BTC display. 
 
