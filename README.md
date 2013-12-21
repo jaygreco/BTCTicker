@@ -1,4 +1,4 @@
-BTCTIcker
+BTCTicker
 =========
 
 An open source Bitcoin ticker for iOS.
