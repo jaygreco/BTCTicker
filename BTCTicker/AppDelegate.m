@@ -7,15 +7,80 @@
 //
 
 #import "AppDelegate.h"
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
+#define kLatestKivaLoansURL [NSURL URLWithString:@"https://coinbase.com/api/v1/currencies/exchange_rates"] //2
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSTimeInterval waitTime = 60.0;
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
     return YES;
 }
-							
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    //This method is responsible for loading the BTC exchange price in the app background. It will run as defined by the
+    //setMinimumBackgroundFetchInterval set in the didFinishLaunchingWithOptions method.
+    
+    NSLog(@"Background Fetch");
+    NSURLResponse* response = nil;
+    NSError* error = nil;
+    NSDictionary* json;
+    
+    //synchronously load the request, since the app is already in the background.
+    
+    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:kLatestKivaLoansURL
+                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                          timeoutInterval:10.0];
+    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+    
+    //This is a simple JSON parser.
+    
+    if(error) {
+        //there was an error
+        NSLog(@"BG Fetch Failure");
+        completionHandler(UIBackgroundFetchResultFailed);
+    }
+    
+    else {
+        
+        json = [NSJSONSerialization
+                JSONObjectWithData:data
+                
+                options:kNilOptions
+                error:&error];
+    }
+    
+    if(error) {
+        //there was an error
+        NSLog(@"BG Fetch Failure");
+        completionHandler(UIBackgroundFetchResultFailed);
+    }
+    
+    else {
+        //there was no error, so update the results.
+        
+        NSLog(@"BG Fetch Success");
+        
+        NSString* BTCValue = [json objectForKey:@"btc_to_usd"];
+        
+        //This is the currency line. Change this to change the
+        //Preferred currency. btc_to_<xxx> where <xxx> is the
+        //Three digit currency code.
+        
+        NSLog(@"Coinbase: %@ USD", BTCValue);
+        
+        int value = [BTCValue intValue];
+        [UIApplication sharedApplication].applicationIconBadgeNumber = value;
+        //Display the result on the app badge.
+        
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
