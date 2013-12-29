@@ -9,7 +9,7 @@ BTCTicker uses background fetch, favoring power efficiency over continous updati
 
 Currently, BTCTicker is using the CoinBase API to pull exchange data and displays it in USD. However, it is easily changed to display a different currency, by changing the JSON tag btc_to_xxx, where xxx is the three digit currency code. In the future, addition of different exchanges is also planned.
 
-Push notifications for price alerts are also planned, as is a settings bundle to change the display currency, exchange, and mBTC or BTC display. 
+Push notifications for price alerts are also now supported. Users can set a high and low margin and if the price crosses the threshold upon background fetch, a notification is displayed. In the works is a settings bundle to change the display currency, exchange, and mBTC or BTC display. 
 
 Finally, for those who are not iPhone developers, and cannot find a way to sign the package for their iOS device, I will be submitting the 1.0 verson to Apple for App Store approval. Keeping the open-source motif, it will be free :)
 
