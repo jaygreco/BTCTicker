@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		834FAEF1186F607600B52934 /* NotifierBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FAEF0186F607600B52934 /* NotifierBackend.m */; };
+		836D3002186FDE370046DA16 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836D3001186FDE370046DA16 /* AudioToolbox.framework */; };
 		83BFA3591865FDE000BF833D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA3581865FDE000BF833D /* Foundation.framework */; };
 		83BFA35B1865FDE000BF833D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35A1865FDE000BF833D /* CoreGraphics.framework */; };
 		83BFA35D1865FDE000BF833D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35C1865FDE000BF833D /* UIKit.framework */; };
@@ -17,9 +19,13 @@
 		83BFA36F1865FDE000BF833D /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83BFA36D1865FDE000BF833D /* Main_iPad.storyboard */; };
 		83BFA3721865FDE000BF833D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BFA3711865FDE000BF833D /* ViewController.m */; };
 		83BFA3741865FDE000BF833D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83BFA3731865FDE000BF833D /* Images.xcassets */; };
+		83BFECE51868B06E00B69F0C /* BTCBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BFECE41868B06E00B69F0C /* BTCBackend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		834FAEEF186F607600B52934 /* NotifierBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifierBackend.h; sourceTree = "<group>"; };
+		834FAEF0186F607600B52934 /* NotifierBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifierBackend.m; sourceTree = "<group>"; };
+		836D3001186FDE370046DA16 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		83BFA3551865FDE000BF833D /* BTCTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83BFA3581865FDE000BF833D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		83BFA35A1865FDE000BF833D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -36,6 +42,9 @@
 		83BFA3711865FDE000BF833D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		83BFA3731865FDE000BF833D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		83BFA37A1865FDE000BF833D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		83BFECE31868B06E00B69F0C /* BTCBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCBackend.h; sourceTree = "<group>"; };
+		83BFECE41868B06E00B69F0C /* BTCBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCBackend.m; sourceTree = "<group>"; };
+		83BFECE71868B23C00B69F0C /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				836D3002186FDE370046DA16 /* AudioToolbox.framework in Frameworks */,
 				83BFA35B1865FDE000BF833D /* CoreGraphics.framework in Frameworks */,
 				83BFA35D1865FDE000BF833D /* UIKit.framework in Frameworks */,
 				83BFA3591865FDE000BF833D /* Foundation.framework in Frameworks */,
@@ -72,6 +82,7 @@
 		83BFA3571865FDE000BF833D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				836D3001186FDE370046DA16 /* AudioToolbox.framework */,
 				83BFA3581865FDE000BF833D /* Foundation.framework */,
 				83BFA35A1865FDE000BF833D /* CoreGraphics.framework */,
 				83BFA35C1865FDE000BF833D /* UIKit.framework */,
@@ -85,6 +96,7 @@
 			children = (
 				83BFA3671865FDE000BF833D /* AppDelegate.h */,
 				83BFA3681865FDE000BF833D /* AppDelegate.m */,
+				83BFECE61868B07E00B69F0C /* Backend */,
 				83BFA36A1865FDE000BF833D /* Main_iPhone.storyboard */,
 				83BFA36D1865FDE000BF833D /* Main_iPad.storyboard */,
 				83BFA3701865FDE000BF833D /* ViewController.h */,
@@ -104,6 +116,18 @@
 				83BFA3661865FDE000BF833D /* BTCTicker-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		83BFECE61868B07E00B69F0C /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				83BFECE71868B23C00B69F0C /* definitions.h */,
+				83BFECE31868B06E00B69F0C /* BTCBackend.h */,
+				83BFECE41868B06E00B69F0C /* BTCBackend.m */,
+				834FAEEF186F607600B52934 /* NotifierBackend.h */,
+				834FAEF0186F607600B52934 /* NotifierBackend.m */,
+			);
+			name = Backend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +205,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				834FAEF1186F607600B52934 /* NotifierBackend.m in Sources */,
+				83BFECE51868B06E00B69F0C /* BTCBackend.m in Sources */,
 				83BFA3721865FDE000BF833D /* ViewController.m in Sources */,
 				83BFA3691865FDE000BF833D /* AppDelegate.m in Sources */,
 				83BFA3651865FDE000BF833D /* main.m in Sources */,
@@ -336,6 +362,7 @@
 				83BFA38C1865FDE000BF833D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

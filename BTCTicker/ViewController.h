@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
+
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+@property (weak, nonatomic) IBOutlet UITextField *lowInput;
+@property (weak, nonatomic) IBOutlet UITextField *highInput;
+@property (weak, nonatomic) IBOutlet UISwitch *alertsSwitch;
+
+- (IBAction)exitKeyboard:(id)sender;
+- (IBAction)applyChanges:(id)sender;
 
 @end

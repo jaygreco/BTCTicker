@@ -7,11 +7,10 @@
 //
 
 #import "ViewController.h"
+#import "definitions.h"
 
-//Define the asynchronous HTTP request and the BTC exchange API address.
-#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-#define kLatestKivaLoansURL [NSURL URLWithString:@"https://coinbase.com/api/v1/currencies/exchange_rates"]
-//Right now, CoinBase is the default exchange. Support for choosing multiple exchanges is planned.
+//perhaps use userdefaults to determine selected exchange and currency.
+NSURL *userURL;
 
 @interface ViewController ()
 
@@ -23,15 +22,55 @@
 {
     [super viewDidLoad];
     
-    [self GET];                                                                     //Load BTC status upon launch.
-    [NSTimer scheduledTimerWithTimeInterval:30                                      //Run a NSTimer to refresh status automatically.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didLoadFromNotification)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [self getAsynchronously:kCoinBaseURL];
+    [NSTimer scheduledTimerWithTimeInterval:30                                          //Run a NSTimer to refresh status automatically.
                                      target:self
-                                   selector:@selector(GET)
-                                   userInfo:nil
+                                   selector:@selector(getAsynchronously:)
+                                   userInfo:kCoinBaseURL
                                     repeats:YES];
+    
+    NSInteger lowValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"kLowAlertValue"] intValue];
+    NSInteger highValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"kHighAlertValue"] intValue];
+    BOOL alertsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"kAlertsEnabled"];
+    
+    //Set up the alerts fields to reflect their states as stored with NSUserDefaults.
+    
+    self.alertsSwitch.on = alertsEnabled;
+    self.lowInput.text = [NSString stringWithFormat:@"%ld",(long)lowValue];
+    self.highInput.text = [NSString stringWithFormat:@"%ld",(long)highValue];
 }
 
-- (void)fetchedData:(NSData *)responseData {                                        //This method is a simple JSON parser.
+- (void)didLoadFromNotification {
+    BOOL alertsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"kAlertsEnabled"];
+    self.alertsSwitch.on = alertsEnabled;
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+- (IBAction)applyChanges:(id)sender {
+    
+    //Save the alert preferences when a change is made.
+    
+    [[NSUserDefaults standardUserDefaults] setBool:self.alertsSwitch.on forKey:@"kAlertsEnabled"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[self.lowInput.text intValue]] forKey:@"kLowAlertValue"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[self.highInput.text intValue]] forKey:@"kHighAlertValue"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)getAsynchronously:(NSURL *)exchangeURL {
+    dispatch_async(kBgQueue, ^{
+        NSData *data = nil;
+        data = [NSData dataWithContentsOfURL:
+                kCoinBaseURL];                                                          //Asynchronously load the GET request.
+        [self performSelectorOnMainThread:@selector(fetchedData:)
+                               withObject:data waitUntilDone:YES];
+    });
+}
+
+- (void)fetchedData:(NSData *)responseData {                                            //This method is a simple JSON parser.
     
     if(responseData) {
         NSError* error;
@@ -43,40 +82,32 @@
         
         if(!error) {
             
-            NSString* BTCValue = [json objectForKey:@"btc_to_usd"];                 //This is the currency line. Change this to change the
-                                                                                    //Preferred currency. btc_to_<xxx> where <xxx> is the
-                                                                                    //Three digit currency code.
+            NSString *BTCValue = [json objectForKey:kUSA];                              //This is the currency line. Change this to change the
+            //Preferred currency. btc_to_<xxx> where <xxx> is the
+            //Three digit currency code. Check definitions.h.
             
             NSLog(@"Coinbase: %@ USD", BTCValue);
             
             int value = [BTCValue intValue];
             
-            [UIApplication sharedApplication].applicationIconBadgeNumber = value;   //Update the icon badge to reflect the BTC price.
+            [UIApplication sharedApplication].applicationIconBadgeNumber = value;       //Update the icon badge to reflect the BTC price.
             
-            NSString *priceString = [NSString stringWithFormat:@"$%d", value];      //Update the app view.
-            [UIView animateWithDuration:0.5 animations:^{
-                self.priceLabel.text = priceString;
-            }];
+            NSString *priceString = [NSString stringWithFormat:@"$%d", value];          //Update the app view.
+            //write to some label?
+            self.priceLabel.text = priceString;
         }
     }
 }
 
-- (void)GET {
-                                                                                    // create the connection with the request
-                                                                                    // and start loading the data
-    dispatch_async(kBgQueue, ^{
-        NSData *data = nil;
-        data = [NSData dataWithContentsOfURL:
-                kLatestKivaLoansURL];                                               //Asynchronously load the GET request.
-        [self performSelectorOnMainThread:@selector(fetchedData:)
-                               withObject:data waitUntilDone:YES];
-    });
-    
-    
-}
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+- (IBAction)exitKeyboard:(id)sender {
+    [self.lowInput resignFirstResponder];
+    [self.highInput resignFirstResponder];
+    //resign the first responders and update the nsuserdefaults.
 }
 
 @end

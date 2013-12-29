@@ -7,16 +7,18 @@
 //
 
 #import "AppDelegate.h"
-#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
-#define kLatestKivaLoansURL [NSURL URLWithString:@"https://coinbase.com/api/v1/currencies/exchange_rates"] //2
+#import "definitions.h"
+#import "NotifierBackend.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
     NSTimeInterval waitTime = 60.0;
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
+    
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     return YES;
 }
 
@@ -32,7 +34,7 @@
     
     //synchronously load the request, since the app is already in the background.
     
-    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:kLatestKivaLoansURL
+    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:kCoinBaseURL
                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                           timeoutInterval:10.0];
     NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
@@ -76,6 +78,8 @@
         int value = [BTCValue intValue];
         [UIApplication sharedApplication].applicationIconBadgeNumber = value;
         //Display the result on the app badge.
+        
+        [NotifierBackend checkAlertStatus:value];
         
         completionHandler(UIBackgroundFetchResultNewData);
     }
