@@ -19,19 +19,32 @@
     NSInteger highValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"kHighAlertValue"] intValue];
     
     if (alertsEnabled) {
+        
+        BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+        NSString *ISOCurrency;
      
-        if (currentBTCValue > highValue) {
+        if (customCurrencyEnabled) {
+            //Format the ending string to match the correct currency code.
+            ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+            ISOCurrency = [ISOCurrency uppercaseString]; //make sure the currency code is all caps.
+        }
+        else {
+            //Display the currency in USD.
+            ISOCurrency = @"USD";
+        }
+        
+        if ((currentBTCValue > highValue) && (highValue > 0)) {
             //BTC has reached a value higher than the set threshold. Create an alert.
             
-            NSString *alertString = [NSString stringWithFormat:@"Bitcoin has exceeded %ld USD", (long)highValue];
+            NSString *alertString = [NSString stringWithFormat:@"Bitcoin has exceeded %ld %@", (long)highValue, ISOCurrency];
             [NotifierBackend createLocalNotification:alertString];
             [NotifierBackend resetNotification];
         }
         
-        if (currentBTCValue < lowValue) {
+        if ((currentBTCValue < lowValue) && (lowValue > 0)) {
             //BTC has reached a value lower than the set threshold. Create an alert.
             
-            NSString *alertString = [NSString stringWithFormat:@"Bitcoin has fallen below %ld USD", (long)lowValue];
+            NSString *alertString = [NSString stringWithFormat:@"Bitcoin has fallen below %ld %@", (long)lowValue, ISOCurrency];
             [NotifierBackend createLocalNotification:alertString];
             [NotifierBackend resetNotification];
         }
@@ -74,7 +87,7 @@
         }
         
         currencyString = [currencyString stringByAppendingString:[ISOCurrency lowercaseString]];
-        NSLog(@"%@", currencyString);
+        //NSLog(@"%@", currencyString);
         
         [[NSUserDefaults standardUserDefaults] setObject:currencyString forKey:@"kEncodedCurrencyCode"];
         [[NSUserDefaults standardUserDefaults] synchronize];

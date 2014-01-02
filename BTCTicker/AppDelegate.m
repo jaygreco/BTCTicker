@@ -18,8 +18,6 @@
     
     NSTimeInterval waitTime = 60.0;
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
-    
-    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     return YES;
 }
@@ -69,20 +67,18 @@
     else {
         //there was no error, so update the results.
         
-        NSLog(@"BG Fetch Success");
-        
         BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
         NSString *BTCValue;
         
         if (customCurrencyEnabled) {
-            NSLog(@"Custom currency enabled.");
+            //NSLog(@"Custom currency enabled.");
             NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
             
             BTCValue = [json objectForKey:formattedCurrencyCode];
         }
         
         else {
-            NSLog(@"No custom currency. Defaulting to USD.");
+            //NSLog(@"Defaulting to USD.");
             BTCValue = [json objectForKey:kUSA];
         }
         
@@ -93,12 +89,14 @@
         NSLog(@"Coinbase: %@", BTCValue);
         
         int value = [BTCValue intValue];
+        
         [UIApplication sharedApplication].applicationIconBadgeNumber = value;
         //Display the result on the app badge.
         
         [NotifierBackend checkAlertStatus:value];
         
         completionHandler(UIBackgroundFetchResultNewData);
+        NSLog(@"BG Fetch Success");
     }
 }
 

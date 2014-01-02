@@ -102,7 +102,7 @@ NSURL *userURL;
             }
             
             else {
-                NSLog(@"No custom currency. Defaulting to USD.");
+                //NSLog(@"No custom currency. Defaulting to USD.");
                 BTCValue = [json objectForKey:kUSA];
             }
             
