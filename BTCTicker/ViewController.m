@@ -54,9 +54,15 @@ NSURL *userURL;
     
     //Save the alert preferences when a change is made.
     
+    NSString *currencyString = @"btc_to_";
+    currencyString = [currencyString stringByAppendingString:[self.currencyCode.text lowercaseString]];
+    
+    NSLog(@"%@", currencyString);
+    
     [[NSUserDefaults standardUserDefaults] setBool:self.alertsSwitch.on forKey:@"kAlertsEnabled"];
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[self.lowInput.text intValue]] forKey:@"kLowAlertValue"];
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:[self.highInput.text intValue]] forKey:@"kHighAlertValue"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithString:currencyString] forKey:@"kCurrencyCode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -81,8 +87,17 @@ NSURL *userURL;
                               error:&error];
         
         if(!error) {
+            /*NSArray *allCurrencies = [NSArray arrayWithObjects:kUSA,kEURO,kENGLAND,kINDIA,kJAPAN,kSINGAPORE,kHONGKONG,kAUSTRALIA,
+                                      kNEWZEALAND,kSWITZERLAND,kSWEDEN,kDENMARK,kCANADA,kNORWAY,kBRUNEI,kINDONESIA,kMALAYSIA,
+                                      kCHINA,kKOREA,kTAIWAN,kUAE,kBAHRAIN,kOMAN,kQATAR,kSAUDIARABIA,kSOUTHAFRICA,nil];
             
-            NSString *BTCValue = [json objectForKey:kUSA];                              //This is the currency line. Change this to change the
+            NSArray *allBTCValues = [json objectsForKeys:allCurrencies notFoundMarker:[NSNull null]];
+            
+            NSLog(@"%@", allBTCValues);*/
+            
+            NSString *BTCValue = [json objectForKey:kUSA];
+            
+            //This is the currency line. Change this to change the
             //Preferred currency. btc_to_<xxx> where <xxx> is the
             //Three digit currency code. Check definitions.h.
             
@@ -107,6 +122,7 @@ NSURL *userURL;
 - (IBAction)exitKeyboard:(id)sender {
     [self.lowInput resignFirstResponder];
     [self.highInput resignFirstResponder];
+    [self.currencyCode resignFirstResponder];
     //resign the first responders and update the nsuserdefaults.
 }
 
