@@ -60,4 +60,26 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)syncCurrency {
+    BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+    
+    if (customCurrencyEnabled) {
+        NSString *ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+        NSString *currencyString = @"btc_to_";
+        
+        if(!ISOCurrency) { //In case the setting is enabled, but the field hasn't been changed.
+            ISOCurrency = @"USD";
+            [[NSUserDefaults standardUserDefaults] setObject:ISOCurrency forKey:@"code_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
+        currencyString = [currencyString stringByAppendingString:[ISOCurrency lowercaseString]];
+        NSLog(@"%@", currencyString);
+        
+        [[NSUserDefaults standardUserDefaults] setObject:currencyString forKey:@"kEncodedCurrencyCode"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+}
+
 @end

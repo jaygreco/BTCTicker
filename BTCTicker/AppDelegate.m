@@ -14,6 +14,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [NotifierBackend syncCurrency];
+    
     NSTimeInterval waitTime = 60.0;
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
     
@@ -24,6 +26,8 @@
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
+    [NotifierBackend syncCurrency];
+
     //This method is responsible for loading the BTC exchange price in the app background. It will run as defined by the
     //setMinimumBackgroundFetchInterval set in the didFinishLaunchingWithOptions method.
     
@@ -67,13 +71,26 @@
         
         NSLog(@"BG Fetch Success");
         
-        NSString* BTCValue = [json objectForKey:@"btc_to_usd"];
+        BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+        NSString *BTCValue;
+        
+        if (customCurrencyEnabled) {
+            NSLog(@"Custom currency enabled.");
+            NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
+            
+            BTCValue = [json objectForKey:formattedCurrencyCode];
+        }
+        
+        else {
+            NSLog(@"No custom currency. Defaulting to USD.");
+            BTCValue = [json objectForKey:kUSA];
+        }
         
         //This is the currency line. Change this to change the
         //Preferred currency. btc_to_<xxx> where <xxx> is the
         //Three digit currency code.
         
-        NSLog(@"Coinbase: %@ USD", BTCValue);
+        NSLog(@"Coinbase: %@", BTCValue);
         
         int value = [BTCValue intValue];
         [UIApplication sharedApplication].applicationIconBadgeNumber = value;
@@ -105,6 +122,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    [NotifierBackend syncCurrency];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

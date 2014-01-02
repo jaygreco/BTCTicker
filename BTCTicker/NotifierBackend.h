@@ -13,5 +13,6 @@
 + (void)checkAlertStatus:(NSInteger)currentBTCValue;
 + (void)createLocalNotification:(NSString *)alertString;
 + (void)resetNotification;
++ (void)syncCurrency;
 
 @end

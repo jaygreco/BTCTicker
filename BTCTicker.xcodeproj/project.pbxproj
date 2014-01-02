@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		834FAEF1186F607600B52934 /* NotifierBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FAEF0186F607600B52934 /* NotifierBackend.m */; };
+		836AEDFF187520E20035215A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 836AEDFE187520E20035215A /* Settings.bundle */; };
 		836D3002186FDE370046DA16 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836D3001186FDE370046DA16 /* AudioToolbox.framework */; };
 		83BFA3591865FDE000BF833D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA3581865FDE000BF833D /* Foundation.framework */; };
 		83BFA35B1865FDE000BF833D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35A1865FDE000BF833D /* CoreGraphics.framework */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		834FAEEF186F607600B52934 /* NotifierBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifierBackend.h; sourceTree = "<group>"; };
 		834FAEF0186F607600B52934 /* NotifierBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifierBackend.m; sourceTree = "<group>"; };
+		836AEDFE187520E20035215A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		836D3001186FDE370046DA16 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		83BFA3551865FDE000BF833D /* BTCTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83BFA3581865FDE000BF833D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -65,6 +67,7 @@
 		83BFA34C1865FDE000BF833D = {
 			isa = PBXGroup;
 			children = (
+				836AEDFE187520E20035215A /* Settings.bundle */,
 				83BFA35E1865FDE000BF833D /* BTCTicker */,
 				83BFA3571865FDE000BF833D /* Frameworks */,
 				83BFA3561865FDE000BF833D /* Products */,
@@ -193,6 +196,7 @@
 			files = (
 				83BFA36F1865FDE000BF833D /* Main_iPad.storyboard in Resources */,
 				83BFA3741865FDE000BF833D /* Images.xcassets in Resources */,
+				836AEDFF187520E20035215A /* Settings.bundle in Resources */,
 				83BFA36C1865FDE000BF833D /* Main_iPhone.storyboard in Resources */,
 				83BFA3631865FDE000BF833D /* InfoPlist.strings in Resources */,
 			);
