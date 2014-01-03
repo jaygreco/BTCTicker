@@ -175,12 +175,12 @@
             [symbol setMaximumFractionDigits:0];
             
             if (customCurrencyEnabled) {
-                NSLog(@"Coinbase: %@ %@", BTCValue, ISOcurrency);
+                NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
                 [symbol setCurrencyCode:ISOcurrency];
             }
             
             else {
-                NSLog(@"Coinbase: %@ USD", BTCValue);
+                NSLog(@"%@: %@ USD", exchange, BTCValue);
                 [symbol setCurrencyCode:@"USD"];
             }
             
@@ -198,7 +198,7 @@
 
 - (IBAction)exitKeyboard:(id)sender {
     //resign the first responders.
-    
+    [self applyChanges:self];
     [self.lowInput resignFirstResponder];
     [self.highInput resignFirstResponder];
     [self.currencyCode resignFirstResponder];
