@@ -129,8 +129,28 @@
         
         int value = [BTCValue intValue];
         
-        [UIApplication sharedApplication].applicationIconBadgeNumber = value;
-        //Display the result on the app badge.
+        if (value > 19999) {
+            //Round it so that it properly displays on the app icon, without changing the in-app display.
+            int modulo = value % 100;
+            int roundedValue = value - modulo + 11;
+            NSLog(@"%d",roundedValue);
+            //Update only the badge number.
+            [UIApplication sharedApplication].applicationIconBadgeNumber = roundedValue;
+        }
+        
+        else if (value > 9999) {
+            //Round it so that it properly displays on the app icon, without changing the in-app display.
+            int modulo = value % 10;
+            int roundedValue = value - modulo + 1;
+            NSLog(@"%d",roundedValue);
+            //Update only the badge number.
+            [UIApplication sharedApplication].applicationIconBadgeNumber = roundedValue;
+        }
+        
+        else {
+            [UIApplication sharedApplication].applicationIconBadgeNumber = value;
+            //Display the result on the app badge.
+        }
         
         [NotifierBackend checkAlertStatus:value];
         

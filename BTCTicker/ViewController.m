@@ -128,7 +128,6 @@
                 //CoinBase selected as the exchange.
                 
                 if (customCurrencyEnabled) {
-                    NSLog(@"Custom currency enabled.");
                     NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
                     
                     BTCValue = [json objectForKey:formattedCurrencyCode];
@@ -165,6 +164,22 @@
             //Convert the string into an integer value to display.
             int value = [BTCValue intValue];
             NSNumber *stringNumber = [NSNumber numberWithInt:value];
+            
+            if (value > 19999) {
+                //Round it so that it properly displays on the app icon, without changing the in-app display.
+                int modulo = value % 100;
+                value = value - modulo + 11;
+                NSLog(@"%d",value);
+                //Update only the badge number.
+            }
+        
+            else if (value > 9999) {
+                //Round it so that it properly displays on the app icon, without changing the in-app display.
+                int modulo = value % 10;
+                value = value - modulo + 1;
+                NSLog(@"%d",value);
+                //Update only the badge number.
+            }
             
             //Update the icon badge to reflect the BTC price.
             [UIApplication sharedApplication].applicationIconBadgeNumber = value;
