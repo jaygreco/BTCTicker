@@ -33,10 +33,28 @@
     NSURLResponse* response = nil;
     NSError* error = nil;
     NSDictionary* json;
+    NSURL *requestURL;
+    NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+    NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
+    BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
     
     //synchronously load the request, since the app is already in the background.
     
-    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:kCoinBaseURL
+    if ([exchange isEqualToString:@"coindesk"]) {
+        if (customCurrencyEnabled) {
+            NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+            requestURL = kCoinDeskURL(ISOcurrency);
+        }
+        else {
+            requestURL = kCoinDeskURL(@"USD");
+        }
+    }
+    
+    else if ([exchange isEqualToString:@"coinbase"]) {
+        requestURL = kCoinBaseURL;
+    }
+    
+    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:requestURL
                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                           timeoutInterval:10.0];
     NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
@@ -66,27 +84,48 @@
     
     else {
         //there was no error, so update the results.
-        
-        BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
         NSString *BTCValue;
         
-        if (customCurrencyEnabled) {
-            //NSLog(@"Custom currency enabled.");
-            NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
+        if ([exchange isEqualToString:@"coinbase"]) {
+            if (customCurrencyEnabled) {
+                //NSLog(@"Custom currency enabled.");
+                NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
             
-            BTCValue = [json objectForKey:formattedCurrencyCode];
+                BTCValue = [json objectForKey:formattedCurrencyCode];
+            }
+        
+            else {
+                //NSLog(@"Defaulting to USD.");
+                BTCValue = [json objectForKey:kUSA];
+            }
         }
         
+        else if ([exchange isEqualToString:@"coindesk"]) {
+            //parse for coindesk
+            
+            if (customCurrencyEnabled) {
+                ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+                ISOcurrency = [ISOcurrency uppercaseString];
+                
+                NSDictionary* BTCDict = [json objectForKey:@"bpi"]; //testing with GBP
+                BTCDict = [BTCDict objectForKey:ISOcurrency]; //currecny preference
+                BTCValue = [BTCDict objectForKey:@"rate"];
+            }
+            
+            else {
+                //NSLog(@"Defaulting to USD.");
+                NSDictionary* BTCDict = [json objectForKey:@"bpi"]; //testing with GBP
+                BTCDict = [BTCDict objectForKey:@"USD"]; //currency preference
+                BTCValue = [BTCDict objectForKey:@"rate"];
+            }
+        }
+        
+        if(customCurrencyEnabled) {
+            NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
+        }
         else {
-            //NSLog(@"Defaulting to USD.");
-            BTCValue = [json objectForKey:kUSA];
+           NSLog(@"%@: %@ USD", exchange, BTCValue);
         }
-        
-        //This is the currency line. Change this to change the
-        //Preferred currency. btc_to_<xxx> where <xxx> is the
-        //Three digit currency code.
-        
-        NSLog(@"Coinbase: %@", BTCValue);
         
         int value = [BTCValue intValue];
         

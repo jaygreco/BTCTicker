@@ -9,6 +9,8 @@
 			<string>3 Digit Currency Code</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>Enter a three digit ISO compliant currency code to change the default currency.</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
@@ -39,12 +41,30 @@
 			<string>PSTextFieldSpecifier</string>
 		</dict>
 		<dict>
+			<key>Title</key>
+			<string>Default Exchange</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string></string>
-			<key>FooterText</key>
-			<string>Enter a three digit ISO standard currency code to set the default currency.</string>
+			<string>Exchange</string>
+			<key>Key</key>
+			<string>exchange_preference</string>
+			<key>DefaultValue</key>
+			<string>coinbase</string>
+			<key>Values</key>
+			<array>
+				<string>coinbase</string>
+				<string>coindesk</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>CoinBase</string>
+				<string>CoinDesk</string>
+			</array>
 		</dict>
 	</array>
 	<key>StringsTable</key>

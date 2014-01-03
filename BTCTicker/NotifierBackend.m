@@ -73,8 +73,15 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+ (void)syncCurrency {
++ (void)syncCurrency { //make sure currency and exchange preferences are properly configured at runtime.
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+    NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
+    
+    if(!exchange) { //In case the setting is enabled, but the field hasn't been changed.
+        exchange = @"coinbase";
+        [[NSUserDefaults standardUserDefaults] setObject:exchange forKey:@"exchange_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     
     if (customCurrencyEnabled) {
         NSString *ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
