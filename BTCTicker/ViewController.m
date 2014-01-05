@@ -129,6 +129,8 @@
             BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
             NSString *BTCValue;
             
+            BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
+            
             if ([exchange isEqualToString:@"coinbase"]) {
                 //CoinBase selected as the exchange.
                 
@@ -170,8 +172,16 @@
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
             NSNumber *numberValue = [formatter numberFromString:BTCValue];
+            
+            if (displayMilliBTC) {
+                //Display in mBTC, so divide by 1000.
+                float tempFloat = [numberValue floatValue];
+                tempFloat *= 0.001;
+                BTCValue = [NSString stringWithFormat:@"%f",tempFloat];
+                numberValue = [formatter numberFromString:BTCValue];
+            }
+            
             NSInteger value = [numberValue integerValue];
-            NSNumber *stringNumber = [NSNumber numberWithInteger:value];
             
             if (value > 19999) {
                 //Round it so that it properly displays on the app icon, without changing the in-app display.
@@ -197,6 +207,12 @@
             [symbol setNumberStyle:NSNumberFormatterCurrencyStyle];
             [symbol setMaximumFractionDigits:0];
             
+            if (displayMilliBTC) {
+                //Display a few decimal places in the event that mBTC display is on.
+                //This way, we can see BTC value with a little bit more precision.
+                [symbol setMaximumFractionDigits:3];
+            }
+            
             if (customCurrencyEnabled) {
                 NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
                 [symbol setCurrencyCode:ISOcurrency];
@@ -208,7 +224,7 @@
             }
             
             //Update the app view with the correct currency symbol.
-            NSString *priceString = [symbol stringFromNumber:stringNumber];
+            NSString *priceString = [symbol stringFromNumber:numberValue];
             self.priceLabel.text = priceString;
         }
     }

@@ -37,6 +37,7 @@
     NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
     NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+    BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
     
     //synchronously load the request, since the app is already in the background.
     
@@ -120,20 +121,35 @@
             }
         }
         
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        NSNumber *numberValue = [formatter numberFromString:BTCValue];
+
+        if (displayMilliBTC) {
+            //Display in mBTC, so divide by 1000.
+            float tempFloat = [numberValue floatValue];
+            tempFloat *= 0.001;
+            BTCValue = [NSString stringWithFormat:@"%f",tempFloat];
+            numberValue = [formatter numberFromString:BTCValue];
+        }
+        
+        NSInteger value = [numberValue integerValue];
+        
+        
+        //Print the values to the log.
         if(customCurrencyEnabled) {
             NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
         }
         else {
-           NSLog(@"%@: %@ USD", exchange, BTCValue);
+            NSLog(@"%@: %@ USD", exchange, BTCValue);
         }
         
-        int value = [BTCValue intValue];
         
         if (value > 19999) {
             //Round it so that it properly displays on the app icon, without changing the in-app display.
             int modulo = value % 100;
-            int roundedValue = value - modulo + 11;
-            NSLog(@"%d",roundedValue);
+            long roundedValue = value - modulo + 11;
+            NSLog(@"%ld",roundedValue);
             //Update only the badge number.
             [UIApplication sharedApplication].applicationIconBadgeNumber = roundedValue;
         }
@@ -141,8 +157,8 @@
         else if (value > 9999) {
             //Round it so that it properly displays on the app icon, without changing the in-app display.
             int modulo = value % 10;
-            int roundedValue = value - modulo + 1;
-            NSLog(@"%d",roundedValue);
+            long roundedValue = value - modulo + 1;
+            NSLog(@"%ld",roundedValue);
             //Update only the badge number.
             [UIApplication sharedApplication].applicationIconBadgeNumber = roundedValue;
         }
