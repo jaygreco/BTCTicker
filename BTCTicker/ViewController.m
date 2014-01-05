@@ -72,12 +72,17 @@
     NSString *ISOCurrency;
     
     if (customCurrencyEnabled) {
-        ISOCurrency = [[NSUserDefaults standardUserDefaults] objectForKey:@"currency_preference"];
+        ISOCurrency = [[NSUserDefaults standardUserDefaults] objectForKey:@"code_preference"];
         //Ensure that the result is uppercase.
         ISOCurrency = [ISOCurrency uppercaseString];
     }
     else {
         //Set the ISO to default to USD.
+        ISOCurrency = @"USD";
+    }
+    
+    if (!ISOCurrency) {
+        //For some reason, the currency didn't load. Prevent a crash.
         ISOCurrency = @"USD";
     }
     
@@ -162,14 +167,17 @@
             ISOcurrency = [ISOcurrency uppercaseString];
             
             //Convert the string into an integer value to display.
-            int value = [BTCValue intValue];
-            NSNumber *stringNumber = [NSNumber numberWithInt:value];
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+            NSNumber *numberValue = [formatter numberFromString:BTCValue];
+            NSInteger value = [numberValue integerValue];
+            NSNumber *stringNumber = [NSNumber numberWithInteger:value];
             
             if (value > 19999) {
                 //Round it so that it properly displays on the app icon, without changing the in-app display.
                 int modulo = value % 100;
                 value = value - modulo + 11;
-                NSLog(@"%d",value);
+                NSLog(@"%ld",value);
                 //Update only the badge number.
             }
         
@@ -177,7 +185,7 @@
                 //Round it so that it properly displays on the app icon, without changing the in-app display.
                 int modulo = value % 10;
                 value = value - modulo + 1;
-                NSLog(@"%d",value);
+                NSLog(@"%ld",value);
                 //Update only the badge number.
             }
             

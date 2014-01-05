@@ -66,6 +66,24 @@
 				<string>CoinDesk</string>
 			</array>
 		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Number Format</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>Display either BTC or mBTC.</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>mBTC_preference</string>
+			<key>Title</key>
+			<string>mBTC Display</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>
