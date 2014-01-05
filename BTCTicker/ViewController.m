@@ -64,6 +64,10 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (IBAction)manualRefresh:(id)sender {
+    [self getAsynchronously];
+}
+
 - (void)getAsynchronously {
     
     //Load user preferences from NSUserDefaults.
@@ -187,7 +191,7 @@
                 //Round it so that it properly displays on the app icon, without changing the in-app display.
                 int modulo = value % 100;
                 value = value - modulo + 11;
-                NSLog(@"%ld",value);
+                NSLog(@"%ld",(long)value);
                 //Update only the badge number.
             }
         
@@ -195,7 +199,7 @@
                 //Round it so that it properly displays on the app icon, without changing the in-app display.
                 int modulo = value % 10;
                 value = value - modulo + 1;
-                NSLog(@"%ld",value);
+                NSLog(@"%ld",(long)value);
                 //Update only the badge number.
             }
             
@@ -240,7 +244,6 @@
     [self applyChanges:self];
     [self.lowInput resignFirstResponder];
     [self.highInput resignFirstResponder];
-    [self.currencyCode resignFirstResponder];
 }
 
 @end

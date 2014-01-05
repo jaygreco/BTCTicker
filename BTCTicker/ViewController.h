@@ -14,9 +14,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *lowInput;
 @property (weak, nonatomic) IBOutlet UITextField *highInput;
 @property (weak, nonatomic) IBOutlet UISwitch *alertsSwitch;
-@property (weak, nonatomic) IBOutlet UITextField *currencyCode;
 
 - (IBAction)exitKeyboard:(id)sender;
 - (IBAction)applyChanges:(id)sender;
+- (IBAction)manualRefresh:(id)sender;
 
 @end
