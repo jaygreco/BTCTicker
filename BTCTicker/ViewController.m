@@ -20,6 +20,9 @@
 {
     [super viewDidLoad];
     
+    //Define the size of the info scroll view
+    self.infoScrollView.contentSize = CGSizeMake(640, 0);
+    
     //Sync the currency and exchange preferences.
     [NotifierBackend syncCurrency];
     
@@ -185,7 +188,9 @@
                 numberValue = [formatter numberFromString:BTCValue];
             }
             
-            NSInteger value = [numberValue integerValue];
+            NSInteger value = roundf([numberValue floatValue]);
+            //Uses roundf because integerValue and conversion to int round differently.
+            //This gives some consistency across the platform.
             
             if (value > 19999) {
                 //Round it so that it properly displays on the app icon, without changing the in-app display.

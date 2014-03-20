@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *lowInput;
 @property (weak, nonatomic) IBOutlet UITextField *highInput;
 @property (weak, nonatomic) IBOutlet UISwitch *alertsSwitch;
+@property (weak, nonatomic) IBOutlet UIScrollView *infoScrollView;
 
 - (IBAction)exitKeyboard:(id)sender;
 - (IBAction)applyChanges:(id)sender;
