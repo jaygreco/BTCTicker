@@ -84,6 +84,14 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>About</string>
+			<key>FooterText</key>
+			<string>Created by Jay Greco. BTCTicker is open source and can be found on GitHub. Please visit https://github.com/jaygreco/BTCTicker for more information. BTCTicker uses the CoinDesk API.</string>
+		</dict>
 	</array>
 	<key>StringsTable</key>
 	<string>Root</string>
