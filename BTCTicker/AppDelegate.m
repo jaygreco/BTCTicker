@@ -9,16 +9,22 @@
 #import "AppDelegate.h"
 #import "definitions.h"
 #import "NotifierBackend.h"
+#import "Appirater.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Appirater setAppId:@"792507801"];
+    
     [NotifierBackend syncCurrency];
     
     NSTimeInterval waitTime = 60.0;
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    [Appirater appLaunched:YES];
+    
     return YES;
 }
 
@@ -190,6 +196,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

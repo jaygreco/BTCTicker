@@ -71,6 +71,9 @@
     
     //Synchronize the defaults.
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    //the user has recieved a push notification, so alert them!
+    [Appirater userDidSignificantEvent:YES];
 }
 
 + (void)syncCurrency { //make sure currency and exchange preferences are properly configured at runtime.
