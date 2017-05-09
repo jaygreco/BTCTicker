@@ -12,4 +12,4 @@ Currently, BTCTicker is using the CoinBase API to pull exchange data and display
 Finally, for those who are not iPhone developers, and cannot find a way to sign the package for their iOS device, I will be submitting the 1.0 verson to Apple for App Store approval. Keeping the open-source motif, it will be free :)
 
 If you like BTCTicker, please contribute on GitHub, or consider making a BTC donation :) 
-1NXWWojVhD8kJ63FagytpDQuXDedBBQHzw
+13cLLkmkfznBcfhuKfQuiPq298G59efQZ6
