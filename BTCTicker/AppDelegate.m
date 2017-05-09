@@ -79,7 +79,7 @@
     if(error) {
         //there was an error
         NSLog(@"BG Fetch Failure");
-        completionHandler(UIBackgroundFetchResultFailed);
+        completionHandler(UIBackgroundFetchResultNewData);
     }
     
     else {

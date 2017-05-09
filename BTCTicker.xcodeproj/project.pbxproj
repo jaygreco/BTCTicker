@@ -10,6 +10,7 @@
 		834FAEF1186F607600B52934 /* NotifierBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FAEF0186F607600B52934 /* NotifierBackend.m */; };
 		836AEDFF187520E20035215A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 836AEDFE187520E20035215A /* Settings.bundle */; };
 		836D3002186FDE370046DA16 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836D3001186FDE370046DA16 /* AudioToolbox.framework */; };
+		83B7B7EC1EC21AE300CAD879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B7B7EB1EC21AE300CAD879 /* LaunchScreen.storyboard */; };
 		83BFA3591865FDE000BF833D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA3581865FDE000BF833D /* Foundation.framework */; };
 		83BFA35B1865FDE000BF833D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35A1865FDE000BF833D /* CoreGraphics.framework */; };
 		83BFA35D1865FDE000BF833D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35C1865FDE000BF833D /* UIKit.framework */; };
@@ -32,6 +33,7 @@
 		834FAEF0186F607600B52934 /* NotifierBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifierBackend.m; sourceTree = "<group>"; };
 		836AEDFE187520E20035215A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		836D3001186FDE370046DA16 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		83B7B7EB1EC21AE300CAD879 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83BFA3551865FDE000BF833D /* BTCTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83BFA3581865FDE000BF833D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		83BFA35A1865FDE000BF833D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -115,6 +117,7 @@
 				83BFA3681865FDE000BF833D /* AppDelegate.m */,
 				83BFECE61868B07E00B69F0C /* Backend */,
 				83BFA36A1865FDE000BF833D /* Main_iPhone.storyboard */,
+				83B7B7EB1EC21AE300CAD879 /* LaunchScreen.storyboard */,
 				83BFA36D1865FDE000BF833D /* Main_iPad.storyboard */,
 				83BFA3701865FDE000BF833D /* ViewController.h */,
 				83BFA3711865FDE000BF833D /* ViewController.m */,
@@ -246,6 +249,7 @@
 				83BFA36F1865FDE000BF833D /* Main_iPad.storyboard in Resources */,
 				83BFA3741865FDE000BF833D /* Images.xcassets in Resources */,
 				836AEDFF187520E20035215A /* Settings.bundle in Resources */,
+				83B7B7EC1EC21AE300CAD879 /* LaunchScreen.storyboard in Resources */,
 				83BFA36C1865FDE000BF833D /* Main_iPhone.storyboard in Resources */,
 				83BFA3631865FDE000BF833D /* InfoPlist.strings in Resources */,
 			);
@@ -385,7 +389,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = W3E9PVFGWZ;
@@ -398,6 +401,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -406,7 +410,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = W3E9PVFGWZ;
@@ -417,6 +420,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaygreco.BTCTicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
