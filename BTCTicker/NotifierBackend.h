@@ -6,8 +6,12 @@
 //  Copyright (c) 2013 Jay Greco. All rights reserved.
 //
 
-#import "Appirater.h"
+//#import "Appirater.h"
 #import <Foundation/Foundation.h>
+
+#define SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+@import UserNotifications;
 
 @interface NotifierBackend : NSObject
 

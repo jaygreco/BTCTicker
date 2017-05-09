@@ -55,11 +55,36 @@
 
 + (void)createLocalNotification:(NSString *)alertString {
     //create and present the local alert, and make it fire immediately.
+    NSLog(@"Creating local notification!");
     
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-    localNotification.alertBody = alertString;
-    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    if(SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(@"10.0")){
+        //iOS 10
+        NSLog(@"iOS10 Notifications enabled!");
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        
+        UNMutableNotificationContent *content = [UNMutableNotificationContent new];
+        content.title = @"BTC Price Alert";
+        content.body = alertString;
+        content.sound = [UNNotificationSound defaultSound];
+        
+        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
+        
+        NSString *identifier = @"UYLLocalNotification";
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier content:content trigger:trigger];
+        
+        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+            if (error != nil) {
+                NSLog(@"Something went wrong: %@",error);
+            }}];
+    }
+    else {
+        //iOS9
+        NSLog(@"iOS9 Notifications enabled!");
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+        localNotification.alertBody = alertString;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+    }
     
     //Add a vibration, for iPhone.
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
@@ -73,18 +98,11 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     //the user has recieved a push notification, so alert them!
-    [Appirater userDidSignificantEvent:YES];
+    //[Appirater userDidSignificantEvent:YES];
 }
 
 + (void)syncCurrency { //make sure currency and exchange preferences are properly configured at runtime.
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
-    NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
-    
-    if(!exchange) { //In case the setting is enabled, but the field hasn't been changed.
-        exchange = @"coinbase";
-        [[NSUserDefaults standardUserDefaults] setObject:exchange forKey:@"exchange_preference"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
     
     if (customCurrencyEnabled) {
         NSString *ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];

@@ -20,15 +20,11 @@
 {
     [super viewDidLoad];
     
-    //Define the size of the info scroll view
-    self.infoScrollView.contentSize = CGSizeMake(640, 0);
-    
     //Sync the currency and exchange preferences.
     [NotifierBackend syncCurrency];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didLoadFromNotification)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadFromNotification) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     //Load the BTC exchange rate data upon startup.
     [self getAsynchronously];
     
@@ -74,7 +70,6 @@
 - (void)getAsynchronously {
     
     //Load user preferences from NSUserDefaults.
-    NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
     NSString *ISOCurrency;
     
@@ -93,26 +88,12 @@
         ISOCurrency = @"USD";
     }
     
-    if ([exchange isEqualToString:@"coinbase"]) {
-        //Asynchronously load the GET request from CoinBase.
-        dispatch_async(kBgQueue, ^{
-            NSData *data = nil;
-            data = [NSData dataWithContentsOfURL:
-                    kCoinBaseURL];
-            [self performSelectorOnMainThread:@selector(fetchedData:)
-                                   withObject:data waitUntilDone:YES];
-        });
-    }
-    else if ([exchange isEqualToString:@"coindesk"]) {
-        //Asynchronously load the GET request from CoinDesk.
-        dispatch_async(kBgQueue, ^{
-            NSData *data = nil;
-            data = [NSData dataWithContentsOfURL:
-            kCoinDeskURL(ISOCurrency)];
-            [self performSelectorOnMainThread:@selector(fetchedData:)
-                                   withObject:data waitUntilDone:YES];
-        });
-    }
+    //Asynchronously load the GET request from CoinBase.
+    dispatch_async(kBgQueue, ^{
+        NSData *data = nil;
+        data = [NSData dataWithContentsOfURL:kCoinBaseURL];
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+    });
     
 }
 
@@ -121,55 +102,27 @@
     
     if(responseData) {
         NSError* error;
-        NSDictionary* json = [NSJSONSerialization
-                              JSONObjectWithData:responseData
-                              
-                              options:kNilOptions
-                              error:&error];
+        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
         
         if(!error) {
-            
-            //The data returned was OK, so parse it based on which exchange is selected.
-            
-            NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
+            //The data returned was OK, so parse it.
             
             BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
             NSString *BTCValue;
             
             BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
             
-            if ([exchange isEqualToString:@"coinbase"]) {
-                //CoinBase selected as the exchange.
+            
+            if (customCurrencyEnabled) {
+                NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
                 
-                if (customCurrencyEnabled) {
-                    NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
-                    
-                    BTCValue = [json objectForKey:formattedCurrencyCode];
-                }
-                
-                else {
-                    BTCValue = [json objectForKey:kUSA];
-                }
+                BTCValue = [json objectForKey:formattedCurrencyCode];
             }
             
-            else if ([exchange isEqualToString:@"coindesk"]) {
-                //Coindesk is selected as the exchange.
-                
-                if (customCurrencyEnabled) {
-                    NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
-                    ISOcurrency = [ISOcurrency uppercaseString];
-                    
-                    NSDictionary* BTCDict = [json objectForKey:@"bpi"];
-                    BTCDict = [BTCDict objectForKey:ISOcurrency];
-                    BTCValue = [BTCDict objectForKey:@"rate"];
-                }
-                
-                else {
-                    NSDictionary* BTCDict = [json objectForKey:@"bpi"];
-                    BTCDict = [BTCDict objectForKey:@"USD"];
-                    BTCValue = [BTCDict objectForKey:@"rate"];
-                }
+            else {
+                BTCValue = [json objectForKey:kUSA];
             }
+            
             
             //Create a string in order to display the proper international currency symbol.
             NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
@@ -223,12 +176,12 @@
             }
             
             if (customCurrencyEnabled) {
-                NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
+                NSLog(@"%@ %@", BTCValue, ISOcurrency);
                 [symbol setCurrencyCode:ISOcurrency];
             }
             
             else {
-                NSLog(@"%@: %@ USD", exchange, BTCValue);
+                NSLog(@"%@ USD", BTCValue);
                 [symbol setCurrencyCode:@"USD"];
             }
             

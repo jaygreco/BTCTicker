@@ -9,23 +9,49 @@
 #import "AppDelegate.h"
 #import "definitions.h"
 #import "NotifierBackend.h"
-#import "Appirater.h"
+//#import "Appirater.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Appirater setAppId:@"792507801"];
+    if(SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(@"10.0")){
+        //iOS 10
+        NSLog(@"iOS10 Notifications enabled!");
+        [launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        UNAuthorizationOptions options = UNAuthorizationOptionBadge + UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+        [center requestAuthorizationWithOptions:options
+                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                  if (!granted) {
+                                      NSLog(@"Something went wrong");
+                                  }}];
+        [[UNUserNotificationCenter currentNotificationCenter] setDelegate: self];
+    }
+    else {
+        //iOS 9
+        NSLog(@"iOS9 Notifications enabled!");
+        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+        
+        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+    }
     
     [NotifierBackend syncCurrency];
     
-    NSTimeInterval waitTime = 60.0;
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime]; //waitTime delegates the minimum wait time.
+    //waitTime delegates the minimum wait time.
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
-    [Appirater appLaunched:YES];
+    //[Appirater appLaunched:YES];
     
     return YES;
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    NSLog(@"Notification Processed");
+    [NotifierBackend resetNotification];
+    completionHandler();
 }
 
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
@@ -38,36 +64,18 @@
     NSLog(@"Background Fetch");
     NSURLResponse* response = nil;
     NSError* error = nil;
-    NSDictionary* json;
     NSURL *requestURL;
     NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
-    NSString *exchange = [[NSUserDefaults standardUserDefaults] objectForKey:@"exchange_preference"];
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
     BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
     
     //synchronously load the request, since the app is already in the background.
-    
-    if ([exchange isEqualToString:@"coindesk"]) {
-        if (customCurrencyEnabled) {
-            NSString *ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
-            requestURL = kCoinDeskURL(ISOcurrency);
-        }
-        else {
-            requestURL = kCoinDeskURL(@"USD");
-        }
-    }
-    
-    else if ([exchange isEqualToString:@"coinbase"]) {
-        requestURL = kCoinBaseURL;
-    }
-    
-    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:requestURL
-                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                          timeoutInterval:10.0];
-    NSData* data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
-    
+    requestURL = kCoinBaseURL;
+    NSURLRequest *urlRequest=[NSURLRequest requestWithURL:requestURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0];
+   
+    NSData* data = [self sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+
     //This is a simple JSON parser.
-    
     if(error) {
         //there was an error
         NSLog(@"BG Fetch Failure");
@@ -75,62 +83,30 @@
     }
     
     else {
-        
-        json = [NSJSONSerialization
-                JSONObjectWithData:data
-                
-                options:kNilOptions
-                error:&error];
-    }
-    
-    if(error) {
-        //there was an error
-        NSLog(@"BG Fetch Failure");
-        completionHandler(UIBackgroundFetchResultFailed);
-    }
-    
-    else {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:data
+                              
+                              options:kNilOptions
+                              error:&error];
         //there was no error, so update the results.
         NSString *BTCValue;
         
-        if ([exchange isEqualToString:@"coinbase"]) {
-            if (customCurrencyEnabled) {
-                //NSLog(@"Custom currency enabled.");
-                NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
+        if (customCurrencyEnabled) {
+            //NSLog(@"Custom currency enabled.");
+            NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];
             
-                BTCValue = [json objectForKey:formattedCurrencyCode];
-            }
-        
-            else {
-                //NSLog(@"Defaulting to USD.");
-                BTCValue = [json objectForKey:kUSA];
-            }
+            BTCValue = [json objectForKey:formattedCurrencyCode];
         }
         
-        else if ([exchange isEqualToString:@"coindesk"]) {
-            //parse for coindesk
-            
-            if (customCurrencyEnabled) {
-                ISOcurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
-                ISOcurrency = [ISOcurrency uppercaseString];
-                
-                NSDictionary* BTCDict = [json objectForKey:@"bpi"]; //testing with GBP
-                BTCDict = [BTCDict objectForKey:ISOcurrency]; //currecny preference
-                BTCValue = [BTCDict objectForKey:@"rate"];
-            }
-            
-            else {
-                //NSLog(@"Defaulting to USD.");
-                NSDictionary* BTCDict = [json objectForKey:@"bpi"]; //testing with GBP
-                BTCDict = [BTCDict objectForKey:@"USD"]; //currency preference
-                BTCValue = [BTCDict objectForKey:@"rate"];
-            }
+        else {
+            BTCValue = [json objectForKey:kUSA];
         }
+        
         
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *numberValue = [formatter numberFromString:BTCValue];
-
+        
         if (displayMilliBTC) {
             //Display in mBTC, so divide by 1000.
             float tempFloat = [numberValue floatValue];
@@ -144,10 +120,10 @@
         
         //Print the values to the log.
         if(customCurrencyEnabled) {
-            NSLog(@"%@: %@ %@", exchange, BTCValue, ISOcurrency);
+            NSLog(@"%@ %@", BTCValue, ISOcurrency);
         }
         else {
-            NSLog(@"%@: %@ USD", exchange, BTCValue);
+            NSLog(@"%@ USD", BTCValue);
         }
         
         
@@ -175,40 +151,35 @@
         }
         
         [NotifierBackend checkAlertStatus:value];
+        NSLog(@"BG Fetch Success");
         
         completionHandler(UIBackgroundFetchResultNewData);
-        NSLog(@"BG Fetch Success");
     }
+
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
+- (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [Appirater appEnteredForeground:YES];
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    [NotifierBackend syncCurrency];
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSError __block *err = NULL;
+    NSData __block *data;
+    BOOL __block reqProcessed = false;
+    NSURLResponse __block *resp;
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable _data, NSURLResponse * _Nullable _response, NSError * _Nullable _error) {
+        resp = _response;
+        err = _error;
+        data = _data;
+        reqProcessed = true;
+    }] resume];
+    
+    while (!reqProcessed) {
+        [NSThread sleepForTimeInterval:0];
+    }
+    
+    *response = resp;
+    *error = err;
+    return data;
 }
 
 @end

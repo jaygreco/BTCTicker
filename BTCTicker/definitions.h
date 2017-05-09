@@ -14,7 +14,6 @@
 
 //define the exchange URLs
 #define kCoinBaseURL [NSURL URLWithString:@"https://coinbase.com/api/v1/currencies/exchange_rates"]
-#define kCoinDeskURL(CODE) [NSURL URLWithString:[@"https://api.coindesk.com/v1/bpi/currentprice/ISO_CODE.json" stringByReplacingOccurrencesOfString:@"ISO_CODE" withString:CODE]]
 
 //define the different JSON Keys to select currency
 #define kUSA @"btc_to_usd"

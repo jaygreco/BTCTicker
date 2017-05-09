@@ -12,36 +12,17 @@
 @implementation BTCBackend
 
 - (void)getSynchronously:(NSURL *)exchangeURL {
-    
 }
 
-+ (void)getAsynchronously:(NSURL *)exchangeURL {
-    dispatch_async(kBgQueue, ^{
-        NSData *data = nil;
-        data = [NSData dataWithContentsOfURL:
-                kCoinBaseURL];                                                          //Asynchronously load the GET request.
-        [self performSelectorOnMainThread:nil
-                               withObject:data waitUntilDone:YES];
-    });
-}
-
-- (void)fetchedData:(NSData *)responseData {                                       //This method is a simple JSON parser.
+- (void)fetchedData:(NSData *)responseData {        //This method is a simple JSON parser.
     
     if(responseData) {
         NSError* error;
-        NSDictionary* json = [NSJSONSerialization
-                              JSONObjectWithData:responseData
-                              
-                              options:kNilOptions
-                              error:&error];
+        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
         
         if(!error) {
-            
-            NSString* BTCValue = [json objectForKey:kUSA];                              //This is the currency line. Change this to change the
-                                                                                        //Preferred currency. btc_to_<xxx> where <xxx> is the
-                                                                                        //Three digit currency code. Check definitions.h.
-            
-            NSLog(@"Coinbase: %@ USD", BTCValue);
+            NSString* BTCValue = [json objectForKey:kUSA];
+            NSLog(@"%@ USD", BTCValue);
             
             int value = [BTCValue intValue];
             
@@ -51,6 +32,15 @@
             //write to some label?
         }
     }
+}
+
++ (void)getAsynchronously:(NSURL *)exchangeURL {
+    dispatch_async(kBgQueue, ^{
+        NSLog(@"Fetching Async...");
+        NSData *data = nil;
+        data = [NSData dataWithContentsOfURL: kCoinBaseURL];          //Asynchronously load the GET request.
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+    });
 }
 
 @end
