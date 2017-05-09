@@ -16,14 +16,17 @@
 
 @implementation ViewController
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self checkNotifications];
+    [self checkBackgroundRefresh];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     //Sync the currency and exchange preferences.
     [NotifierBackend syncCurrency];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadFromNotification) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     //Load the BTC exchange rate data upon startup.
     [self getAsynchronously];
@@ -203,5 +206,101 @@
     [self.lowInput resignFirstResponder];
     [self.highInput resignFirstResponder];
 }
+
+- (void)checkBackgroundRefresh {
+    if ([[UIApplication sharedApplication] backgroundRefreshStatus] == UIBackgroundRefreshStatusAvailable) {
+        NSLog(@"Background updates are available for the app.");
+    }
+    
+    else if([[UIApplication sharedApplication] backgroundRefreshStatus] == UIBackgroundRefreshStatusDenied) {
+        
+        // Notifications not allowed
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Background Refresh Disabled!" message:@"BTCTicker uses background refresh to update the price. If you want this to work, you need to enable it in settings." preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            //Show the settings menu
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        NSLog(@"The user explicitly disabled background behavior for this app or for the whole system.");
+    }
+    
+    else if([[UIApplication sharedApplication] backgroundRefreshStatus] == UIBackgroundRefreshStatusRestricted) {
+        
+        // Notifications not allowed
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Background Refresh Disabled!" message:@"BTCTicker uses background refresh to update the price. If you want this to work, you need to enable it in settings." preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            //Show the settings menu
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }]];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        NSLog(@"Background updates are unavailable and the user cannot enable them again. For example, this status can occur when parental controls are in effect for the current user.");
+    }
+}
+
+- (void)checkNotifications {
+    //Check for notifications enabled
+    if(SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(@"10.0")){
+        //iOS10
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            
+            if (settings.authorizationStatus != UNAuthorizationStatusAuthorized) {
+                
+                // Notifications not allowed
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Notifications Disabled!" message:@"BTCTicker uses local notifications to deliver price alerts. If you want this to work, you need to enable it in settings." preferredStyle:UIAlertControllerStyleAlert];
+                
+                [alertController addAction:[UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    //Show the settings menu
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                }]];
+                
+                [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }]];
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+        }];
+    }
+    else {
+        //iOS9
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadFromNotification) name:UIApplicationDidBecomeActiveNotification object:nil];
+        
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){ // Check it's iOS 8 and above
+            UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+            
+            if (!(grantedSettings.types & UIUserNotificationTypeAlert)){
+                // Notifications not allowed
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Notifications Disabled!" message:@"BTCTicker uses local notifications to deliver price alerts. If you want this to work, you need to enable it in settings." preferredStyle:UIAlertControllerStyleAlert];
+                
+                [alertController addAction:[UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    //Show the settings menu
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                }]];
+                
+                [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }]];
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+        }
+    }
+}
+
 
 @end
