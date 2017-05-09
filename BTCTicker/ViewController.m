@@ -17,8 +17,11 @@
 @implementation ViewController
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self checkNotifications];
-    [self checkBackgroundRefresh];
+    //Don't do this on the first launch
+    if ([self isAppAlreadyLaunchedOnce]) {
+        [self checkNotifications];
+        [self checkBackgroundRefresh];
+    }
 }
 
 - (void)viewDidLoad
@@ -302,5 +305,18 @@
     }
 }
 
+- (BOOL)isAppAlreadyLaunchedOnce {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isAppAlreadyLaunchedOnce"])
+    {
+        return true;
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isAppAlreadyLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"First launch!");
+        return false;
+    }
+}
 
 @end
