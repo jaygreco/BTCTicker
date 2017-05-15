@@ -14,7 +14,7 @@
 - (void)getSynchronously:(NSURL *)exchangeURL {
 }
 
-- (void)fetchedData:(NSData *)responseData {        //This method is a simple JSON parser.
+- (int)fetchedData:(NSData *)responseData {        //This method is a simple JSON parser.
     
     if(responseData) {
         NSError* error;
@@ -26,12 +26,12 @@
             
             int value = [BTCValue intValue];
             
-            [UIApplication sharedApplication].applicationIconBadgeNumber = value;       //Update the icon badge to reflect the BTC price.
-            
-            //NSString *priceString = [NSString stringWithFormat:@"$%d", value];          //Update the app view.
-            //write to some label?
+            [UIApplication sharedApplication].applicationIconBadgeNumber = value;
+            return value;
         }
+        return 0;
     }
+    return 0;
 }
 
 + (void)getAsynchronously:(NSURL *)exchangeURL {
@@ -41,6 +41,30 @@
         data = [NSData dataWithContentsOfURL: kCoinBaseURL];          //Asynchronously load the GET request.
         [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
     });
+}
+
+- (NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error
+{
+    
+    NSError __block *err = NULL;
+    NSData __block *data;
+    BOOL __block reqProcessed = false;
+    NSURLResponse __block *resp;
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable _data, NSURLResponse * _Nullable _response, NSError * _Nullable _error) {
+        resp = _response;
+        err = _error;
+        data = _data;
+        reqProcessed = true;
+    }] resume];
+    
+    while (!reqProcessed) {
+        [NSThread sleepForTimeInterval:0];
+    }
+    
+    *response = resp;
+    *error = err;
+    return data;
 }
 
 @end

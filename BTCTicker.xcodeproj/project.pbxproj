@@ -10,6 +10,10 @@
 		834FAEF1186F607600B52934 /* NotifierBackend.m in Sources */ = {isa = PBXBuildFile; fileRef = 834FAEF0186F607600B52934 /* NotifierBackend.m */; };
 		836AEDFF187520E20035215A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 836AEDFE187520E20035215A /* Settings.bundle */; };
 		836D3002186FDE370046DA16 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 836D3001186FDE370046DA16 /* AudioToolbox.framework */; };
+		838487591EC60FA300FEC9DF /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 838487581EC60FA300FEC9DF /* NotificationCenter.framework */; };
+		8384875D1EC60FA300FEC9DF /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8384875C1EC60FA300FEC9DF /* TodayViewController.m */; };
+		838487601EC60FA300FEC9DF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8384875E1EC60FA300FEC9DF /* MainInterface.storyboard */; };
+		838487641EC60FA300FEC9DF /* BTCWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 838487571EC60FA200FEC9DF /* BTCWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		83B7B7EC1EC21AE300CAD879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83B7B7EB1EC21AE300CAD879 /* LaunchScreen.storyboard */; };
 		83BFA3591865FDE000BF833D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA3581865FDE000BF833D /* Foundation.framework */; };
 		83BFA35B1865FDE000BF833D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83BFA35A1865FDE000BF833D /* CoreGraphics.framework */; };
@@ -27,12 +31,43 @@
 		83DC102119480F6800442C9F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83DC102019480F6800442C9F /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		838487621EC60FA300FEC9DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83BFA34D1865FDE000BF833D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 838487561EC60FA200FEC9DF;
+			remoteInfo = BTCWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		838487681EC60FA300FEC9DF /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				838487641EC60FA300FEC9DF /* BTCWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		832C23E31EBEFA2900CED0F7 /* BTCTicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BTCTicker.entitlements; sourceTree = "<group>"; };
 		834FAEEF186F607600B52934 /* NotifierBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifierBackend.h; sourceTree = "<group>"; };
 		834FAEF0186F607600B52934 /* NotifierBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifierBackend.m; sourceTree = "<group>"; };
+		83651B301EC6304F00CB4020 /* BTCWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BTCWidget.entitlements; sourceTree = "<group>"; };
 		836AEDFE187520E20035215A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		836D3001186FDE370046DA16 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		838487571EC60FA200FEC9DF /* BTCWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BTCWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		838487581EC60FA300FEC9DF /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		8384875B1EC60FA300FEC9DF /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		8384875C1EC60FA300FEC9DF /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		8384875F1EC60FA300FEC9DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		838487611EC60FA300FEC9DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83B7B7EB1EC21AE300CAD879 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		83BFA3551865FDE000BF833D /* BTCTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTCTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83BFA3581865FDE000BF833D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -59,6 +94,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		838487541EC60FA200FEC9DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				838487591EC60FA300FEC9DF /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83BFA3521865FDE000BF833D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -76,11 +119,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8384875A1EC60FA300FEC9DF /* BTCWidget */ = {
+			isa = PBXGroup;
+			children = (
+				83651B301EC6304F00CB4020 /* BTCWidget.entitlements */,
+				838487691EC6116E00FEC9DF /* Backend */,
+				8384875B1EC60FA300FEC9DF /* TodayViewController.h */,
+				8384875C1EC60FA300FEC9DF /* TodayViewController.m */,
+				8384875E1EC60FA300FEC9DF /* MainInterface.storyboard */,
+				838487611EC60FA300FEC9DF /* Info.plist */,
+			);
+			path = BTCWidget;
+			sourceTree = "<group>";
+		};
+		838487691EC6116E00FEC9DF /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Backend;
+			sourceTree = "<group>";
+		};
 		83BFA34C1865FDE000BF833D = {
 			isa = PBXGroup;
 			children = (
 				836AEDFE187520E20035215A /* Settings.bundle */,
 				83BFA35E1865FDE000BF833D /* BTCTicker */,
+				8384875A1EC60FA300FEC9DF /* BTCWidget */,
 				83BFA3571865FDE000BF833D /* Frameworks */,
 				83BFA3561865FDE000BF833D /* Products */,
 			);
@@ -90,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				83BFA3551865FDE000BF833D /* BTCTicker.app */,
+				838487571EC60FA200FEC9DF /* BTCWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,6 +170,7 @@
 				83BFA35A1865FDE000BF833D /* CoreGraphics.framework */,
 				83BFA35C1865FDE000BF833D /* UIKit.framework */,
 				83BFA37A1865FDE000BF833D /* XCTest.framework */,
+				838487581EC60FA300FEC9DF /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -153,6 +219,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		838487561EC60FA200FEC9DF /* BTCWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 838487671EC60FA300FEC9DF /* Build configuration list for PBXNativeTarget "BTCWidget" */;
+			buildPhases = (
+				838487531EC60FA200FEC9DF /* Sources */,
+				838487541EC60FA200FEC9DF /* Frameworks */,
+				838487551EC60FA200FEC9DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BTCWidget;
+			productName = BTCWidget;
+			productReference = 838487571EC60FA200FEC9DF /* BTCWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		83BFA3541865FDE000BF833D /* BTCTicker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83BFA38A1865FDE000BF833D /* Build configuration list for PBXNativeTarget "BTCTicker" */;
@@ -160,10 +243,12 @@
 				83BFA3511865FDE000BF833D /* Sources */,
 				83BFA3521865FDE000BF833D /* Frameworks */,
 				83BFA3531865FDE000BF833D /* Resources */,
+				838487681EC60FA300FEC9DF /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				838487631EC60FA300FEC9DF /* PBXTargetDependency */,
 			);
 			name = BTCTicker;
 			productName = BTCTicker;
@@ -179,9 +264,21 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Jay Greco";
 				TargetAttributes = {
+					838487561EC60FA200FEC9DF = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					83BFA3541865FDE000BF833D = {
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -237,11 +334,20 @@
 			projectRoot = "";
 			targets = (
 				83BFA3541865FDE000BF833D /* BTCTicker */,
+				838487561EC60FA200FEC9DF /* BTCWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		838487551EC60FA200FEC9DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				838487601EC60FA300FEC9DF /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83BFA3531865FDE000BF833D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -258,6 +364,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		838487531EC60FA200FEC9DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8384875D1EC60FA300FEC9DF /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83BFA3511865FDE000BF833D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,7 +386,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		838487631EC60FA300FEC9DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 838487561EC60FA200FEC9DF /* BTCWidget */;
+			targetProxy = 838487621EC60FA300FEC9DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		8384875E1EC60FA300FEC9DF /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8384875F1EC60FA300FEC9DF /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		83BFA3611865FDE000BF833D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -300,6 +430,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		838487651EC60FA300FEC9DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = BTCWidget/BTCWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = REM6C7EE3E;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BTCWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jay-greco.BTCTicker.BTCWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		838487661EC60FA300FEC9DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = BTCWidget/BTCWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = REM6C7EE3E;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = BTCWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jay-greco.BTCTicker.BTCWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		83BFA3881865FDE000BF833D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -389,15 +564,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BTCTicker/BTCTicker.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = W3E9PVFGWZ;
+				DEVELOPMENT_TEAM = REM6C7EE3E;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTCTicker/BTCTicker-Prefix.pch";
 				INFOPLIST_FILE = "BTCTicker/BTCTicker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jaygreco.BTCTicker;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jay-greco.BTCTicker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -410,14 +586,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BTCTicker/BTCTicker.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = W3E9PVFGWZ;
+				DEVELOPMENT_TEAM = REM6C7EE3E;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BTCTicker/BTCTicker-Prefix.pch";
 				INFOPLIST_FILE = "BTCTicker/BTCTicker-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jaygreco.BTCTicker;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jay-greco.BTCTicker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -428,6 +605,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		838487671EC60FA300FEC9DF /* Build configuration list for PBXNativeTarget "BTCWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				838487651EC60FA300FEC9DF /* Debug */,
+				838487661EC60FA300FEC9DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		83BFA3501865FDE000BF833D /* Build configuration list for PBXProject "BTCTicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

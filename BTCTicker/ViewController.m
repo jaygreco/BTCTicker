@@ -17,6 +17,9 @@
 @implementation ViewController
 
 - (void)viewDidAppear:(BOOL)animated {
+    //Sync the currency and exchange preferences.
+    [NotifierBackend syncCurrency];
+    
     //Don't do this on the first launch
     if ([self isAppAlreadyLaunchedOnce]) {
         [self checkNotifications];
@@ -55,8 +58,8 @@
 
 - (void)didLoadFromNotification {
     //Clear the alerts and disable alerts in the future.
-    BOOL alertsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"kAlertsEnabled"];
-    self.alertsSwitch.on = alertsEnabled;
+    //BOOL alertsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"kAlertsEnabled"];
+    self.alertsSwitch.on = NO;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
@@ -106,6 +109,8 @@
 - (void)fetchedData:(NSData *)responseData {
     //This method is a simple JSON parser.
     
+    [NotifierBackend syncCurrency];
+    
     if(responseData) {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
@@ -117,7 +122,6 @@
             NSString *BTCValue;
             
             BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
-            
             
             if (customCurrencyEnabled) {
                 NSString *formattedCurrencyCode = [[NSUserDefaults standardUserDefaults] stringForKey:@"kEncodedCurrencyCode"];

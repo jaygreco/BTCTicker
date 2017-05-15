@@ -15,6 +15,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    //itunes logging
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [paths objectAtIndex:0];
+//    NSString *fileName =[NSString stringWithFormat:@"%@.log",[NSDate date]];
+//    NSString *logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+//    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+    
     if(SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(@"10.0")){
         //iOS 10
         NSLog(@"iOS10 Notifications enabled!");
@@ -39,7 +46,8 @@
     [NotifierBackend syncCurrency];
     
     //waitTime delegates the minimum wait time.
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    NSTimeInterval waitTime = 60.0;
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:waitTime];
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
@@ -79,7 +87,7 @@
     if(error) {
         //there was an error
         NSLog(@"BG Fetch Failure");
-        completionHandler(UIBackgroundFetchResultNewData);
+        completionHandler(UIBackgroundFetchResultFailed);
     }
     
     else {

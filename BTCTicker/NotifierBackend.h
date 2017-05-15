@@ -19,5 +19,6 @@
 + (void)createLocalNotification:(NSString *)alertString;
 + (void)resetNotification;
 + (void)syncCurrency;
++ (void)SyncSharedAppGroups;
 
 @end

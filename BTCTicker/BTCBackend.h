@@ -10,7 +10,7 @@
 
 @interface BTCBackend : NSObject
 
-- (void)fetchedData:(NSData *)responseData;
+- (int)fetchedData:(NSData *)responseData;
 + (void)getAsynchronously:(NSURL *)exchangeURL;
 - (void)getSynchronously:(NSURL *)exchangeURL;
 

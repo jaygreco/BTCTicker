@@ -101,8 +101,33 @@
     //[Appirater userDidSignificantEvent:YES];
 }
 
-+ (void)syncCurrency { //make sure currency and exchange preferences are properly configured at runtime.
++ (void)SyncSharedAppGroups {
+    NSLog(@"[Notifier] Syncing shared app groups...");
+    
+    //Sync all defaults from prefrences to app extension
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.jay-greco.BTCExtensionSharingDefaults"];
+    
+    //Currency Code
+    NSString *ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
+    [sharedDefaults setObject:ISOCurrency forKey:@"code_preference"];
+    
+    //Enabled
     BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+    [sharedDefaults setBool:customCurrencyEnabled forKey:@"enabled_preference"];
+    
+    //mBTC
+    BOOL displayMilliBTC = [[NSUserDefaults standardUserDefaults] boolForKey:@"mBTC_preference"];
+    [sharedDefaults setBool:displayMilliBTC forKey:@"mBTC_preference"];
+    [sharedDefaults synchronize];
+}
+
++ (void)syncCurrency { //make sure currency and exchange preferences are properly configured at runtime.
+    NSLog(@"[Notifier] Syncing currency...");
+    
+    [self SyncSharedAppGroups];
+    
+    BOOL customCurrencyEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_preference"];
+    NSLog(@"[Notifier] Custom currency: %d", customCurrencyEnabled);
     
     if (customCurrencyEnabled) {
         NSString *ISOCurrency = [[NSUserDefaults standardUserDefaults] stringForKey:@"code_preference"];
@@ -119,8 +144,8 @@
         
         [[NSUserDefaults standardUserDefaults] setObject:currencyString forKey:@"kEncodedCurrencyCode"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"[Notifier] kEncodedCurrencyCode: %@", currencyString);
     }
-
 }
 
 @end
